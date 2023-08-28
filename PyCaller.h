@@ -22,6 +22,7 @@ class PyCaller {
 public:
 	char* sTOc(string aString);
 	PyObject* CallPyFunc(string pyFileName, string pyFuncName, const char* fmt...);
+	PyObject* CallPyFuncNoArgs(string pyFileName, string pyFuncName);
 	string PyObjToString(PyObject* sPyObj);
 	char PyObjToChar(PyObject* cPyObj);
 	int PyObjToInt(PyObject* dPyObj);
