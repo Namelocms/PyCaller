@@ -15,3 +15,6 @@ def testString(string1, string2, string3):
 
 def testChar(character):
 	return character
+
+def testNoArgs():
+	return 'Test Successful'
