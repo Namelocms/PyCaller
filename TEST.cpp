@@ -10,6 +10,7 @@ int main() {
 	PyObject* dPy;
 	PyObject* sPy;
 	PyObject* cPy;
+	PyObject* nPy;
 
 	string pyFileName = "PyFile";
 	
@@ -17,11 +18,13 @@ int main() {
 	string testDouble = "testDouble";
 	string testString = "testString";
 	string testChar = "testChar";
+	string testNoArgs = "testNoArgs";
 	
 	int intResult;
 	double doubleResult;
 	string stringResult;
 	char charResult;
+	string noArgsResult;
 
 	iPy = py.CallPyFunc(pyFileName, testInt, "ddd", 121, 22, 4433);
 	intResult = py.PyObjToDouble(iPy);	// int expected
@@ -42,6 +45,11 @@ int main() {
 	charResult = py.PyObjToChar(cPy);	// char expected
 	std::cout << "Result: " << charResult << ":" << typeid(charResult).name() << std::endl;
 	Py_DECREF(cPy);
+
+	nPy = py.CallPyFuncNoArgs(pyFileName, testNoArgs);
+	noArgsResult = py.PyObjToString(nPy);	// string expected
+	std::cout << "Result: " << noArgsResult << ":" << typeid(noArgsResult).name() << std::endl;
+	Py_DECREF(nPy);
 
 	Py_Finalize();		// Interpereter shutdown
 	return 0;
