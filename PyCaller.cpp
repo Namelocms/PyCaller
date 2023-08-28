@@ -23,7 +23,7 @@ Format string example: "cdfs" -> 'c'(char), 'd'(int), 'f'(double), 's'(string) -
 
 */
 PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char* fmt...) {
-	PyObject* pArgs = nullptr, * pValue = nullptr, * pResult = nullptr, * pName = nullptr, * pModule = nullptr, * pFunc = nullptr;
+	PyObject* pArgs = nullptr, * pValue = nullptr, * pResult = nullptr, * pModule = nullptr, * pFunc = nullptr;
 	char* fileName;
 	char* funcName;
 	int numArgs;
@@ -39,15 +39,13 @@ PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char*
 
 	std::cout << fileName << std::endl << funcName << std::endl;
 
-	pName = PyUnicode_DecodeFSDefault(fileName);					// Import the Python module
-	pModule = PyImport_ImportModule(fileName);								//
+	pModule = PyImport_ImportModule(fileName);							// Import Python Module
 	if (pModule == nullptr) {
 		std::cout << "ERROR Importing Python file!" << std::endl;
 		PyErr_Print();
 		PyErr_Clear();
 
 	}
-	Py_DECREF(pName);												//
 
 	if (pModule != NULL) {
 		pFunc = PyObject_GetAttrString(pModule, funcName);			// Get a reference to the Python function
@@ -120,6 +118,44 @@ PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char*
 
 	return pResult;													// Return the result of the Python function call
 }
+
+// Call Python fuction with no arguments to pass
+PyObject* PyCaller::CallPyFuncNoArgs(string pyFileName, string pyFuncName) {
+	PyObject* pModule, * pFunc = nullptr, * pResult = nullptr;
+	char* fileName, * funcName;
+
+	fileName = sTOc(pyFileName);
+	funcName = sTOc(pyFuncName);
+
+	std::cout << fileName << std::endl << funcName << std::endl;
+
+	pModule = PyImport_ImportModule(fileName);						// Import the Python module
+	if (pModule == nullptr) {
+		std::cout << "ERROR Importing Python file!" << std::endl;
+		PyErr_Print();
+		PyErr_Clear();
+
+	}
+
+	else {
+		pFunc = PyObject_GetAttrString(pModule, funcName);			// Get a reference to the Python function
+		try {
+			pResult = PyObject_CallObject(pFunc, NULL);				// Call the Python function with NULL arguments
+
+		}
+		catch (std::exception& e) {
+			std::cerr << "Error with Python function call: " << pyFuncName << ": " << e.what() << std::endl;
+		}
+	}
+
+	Py_XDECREF(pFunc);												// Clean up
+	Py_DECREF(pModule);												// 											
+	delete[] fileName;												// 
+	delete[] funcName;												// 
+
+	return pResult;													// Return the result of the Python function call
+}
+
 
 // Convert PyObject result to C++ string
 string PyCaller::PyObjToString(PyObject* sPyObj) {
