@@ -27,7 +27,7 @@ int main() {
 	string noArgsResult;
 
 	iPy = py.CallPyFunc(pyFileName, testInt, "ddd", 121, 22, 4433);
-	intResult = py.PyObjToDouble(iPy);	// int expected
+	intResult = py.PyObjToInt(iPy);	// int expected
 	std::cout << "Result: " << intResult << ":" << typeid(intResult).name() << std::endl;
 	Py_DECREF(iPy);
 
