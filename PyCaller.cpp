@@ -23,16 +23,25 @@ Format string example: "cdfs" -> 'c'(char), 'd'(int), 'f'(double), 's'(string) -
 
 */
 PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char* fmt...) {
+	/*
+ 	PyObject* Descriptions:
+	 	pArgs: Python tuple of arguments to pass to Python function
+	  	pValue: C++ type converted to Python type
+	   	pResult: Python type result returned from Python Function
+		pModule: Holds imported Python file
+	 	pFunc: Holds reference to Python Function from pModule
+  	*/
 	PyObject* pArgs = nullptr, * pValue = nullptr, * pResult = nullptr, * pModule = nullptr, * pFunc = nullptr;
-	char* fileName;
-	char* funcName;
-	int numArgs;
-	char argType;
-	const char* argStr;
-	char argC;			// character argument
-	int argD;			// integer argument
-	double argF;		// double argument
-	const char* argS;	// string argument
+	
+	char* fileName;			// Name of Python File
+	char* funcName;			// Name of Python function
+	
+	int numArgs;			// Number of arguments to pass to Python function
+	char argType;			// Argument Type (c, s, f, d)
+	char argC;				// character argument
+	int argD;				// integer argument
+	double argF;			// double argument
+	const char* argS;		// string argument
 
 	fileName = sTOc(pyFileName);									// Convert file name string to char*[]
 	funcName = sTOc(pyFuncName);									// Convert func name string to char*[]
@@ -48,29 +57,29 @@ PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char*
 	}
 
 	if (pModule != NULL) {
-		pFunc = PyObject_GetAttrString(pModule, funcName);			// Get a reference to the Python function
+		pFunc = PyObject_GetAttrString(pModule, funcName);				// Get a reference to the Python function
 
 		if (pFunc && PyCallable_Check(pFunc)) {
-			va_list args;												// Initialize a variable argument list
+			va_list args;								// Initialize a variable argument list
 			va_start(args, fmt);
 
-			numArgs = std::strlen(fmt);									// Determine the number of arguments based on the format string
-			pArgs = PyTuple_New(numArgs);								// Create a tuple to hold Python argument objects
+			numArgs = std::strlen(fmt);						// Determine the number of arguments based on the format string
+			pArgs = PyTuple_New(numArgs);						// Create a tuple to hold Python argument objects
 
-			for (int i = 0; i < numArgs; i++) {							// Loop through the format string and process each argument
-				argType = fmt[i];										// Get the type specifier from the format string
+			for (int i = 0; i < numArgs; i++) {					// Loop through the format string and process each argument
+				argType = fmt[i];						// Get the type specifier from the format string
 
 				switch (argType) {
 				case 'c':
-					argC = va_arg(args, char);                          // Extract a character argument
-					pValue = PyUnicode_DecodeUTF8(&argC, 1, NULL);      // Convert the character to a Python Unicode string object
-					PyTuple_SetItem(pArgs, i, pValue);                  // Add the Python object to the tuple
+					argC = va_arg(args, char);                          	// Extract a character argument
+					pValue = PyUnicode_DecodeUTF8(&argC, 1, NULL);     	// Convert the character to a Python Unicode string object
+					PyTuple_SetItem(pArgs, i, pValue);                  	// Add the Python object to the tuple
 					break;
 
 				case 'd':
-					argD = va_arg(args, int);                           // Extract an integer argument
-					pValue = PyLong_FromLong(argD);                     // Convert the integer to a Python long object
-					PyTuple_SetItem(pArgs, i, pValue);                  // Add the Python object to the tuple
+					argD = va_arg(args, int);                           	// Extract an integer argument
+					pValue = PyLong_FromLong(argD);                     	// Convert the integer to a Python long object
+					PyTuple_SetItem(pArgs, i, pValue);                  	// Add the Python object to the tuple
 					break;
 
 				case 'f':
@@ -85,7 +94,7 @@ PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char*
 					PyTuple_SetItem(pArgs, i, pValue);                  // Add the Python object to the tuple
 					break;
 
-				case '/0':
+				case '/0':												// End of fmt string
 					// Do nothing here
 					break;
 				}
@@ -111,7 +120,7 @@ PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char*
 
 	Py_XDECREF(pFunc);												// Clean up
 	Py_DECREF(pModule);												// 											
-	Py_DECREF(pArgs);												// 											// 
+	Py_DECREF(pArgs);												//
 	Py_DECREF(pValue);												// 
 	delete[] fileName;												// 
 	delete[] funcName;												// 
