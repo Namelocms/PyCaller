@@ -6,26 +6,33 @@ int main() {
 
 	Py_Initialize();		// Needed for Python Interpereter Initialization
 
+	// Python Results
 	PyObject* iPy;
 	PyObject* dPy;
 	PyObject* sPy;
 	PyObject* cPy;
 	PyObject* nPy;
+	PyObject* mPy;
 
+	// Python File name
 	string pyFileName = "PyFile";
-	
+
+	// Python Function Names
 	string testInt = "testInt";
 	string testDouble = "testDouble";
 	string testString = "testString";
 	string testChar = "testChar";
 	string testNoArgs = "testNoArgs";
-	
+
+	// C++ Results
 	int intResult;
 	double doubleResult;
 	string stringResult;
 	char charResult;
 	string noArgsResult;
+	double mixedDoubleResult;
 
+	// TESTING
 	iPy = py.CallPyFunc(pyFileName, testInt, "ddd", 121, 22, 4433);
 	intResult = py.PyObjToInt(iPy);	// int expected
 	std::cout << "Result: " << intResult << ":" << typeid(intResult).name() << std::endl;
@@ -50,6 +57,11 @@ int main() {
 	noArgsResult = py.PyObjToString(nPy);	// string expected
 	std::cout << "Result: " << noArgsResult << ":" << typeid(noArgsResult).name() << std::endl;
 	Py_DECREF(nPy);
+
+	mPy = py.CallPyFunc(pyFileName, testDouble, "dff", 1, 2.4, 3.7);
+	mixedDoubleResult = py.PyObjToDouble(mPy);
+	std::cout << "Result: " << mixedDoubleResult << ":" << typeid(mixedDoubleResult).name() << std::endl << std::endl;
+	Py_DECREF(mPy);
 
 	Py_Finalize();		// Interpereter shutdown
 	return 0;
