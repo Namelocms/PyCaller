@@ -8,7 +8,7 @@
 *	Properties -> VC++ Directories
 *		Include Directories: Python include folder
 *		Library Directories: Python libs folder
-*	Put .py files in the release folder directory
+*	Put .py and dll files in the release folder directory
 */
 #include <Python.h>
 #include <iostream>
