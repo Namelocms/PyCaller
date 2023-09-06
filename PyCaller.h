@@ -11,7 +11,6 @@
 *	Put .py files in the release folder directory
 */
 #include <Python.h>
-#include <Windows.h>
 #include <iostream>
 #include <string>
 #include <cstdarg>		// Variable argument types using variadic functions
