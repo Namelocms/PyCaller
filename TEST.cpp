@@ -13,6 +13,7 @@ int main() {
 	PyObject* cPy;
 	PyObject* nPy;
 	PyObject* mPy;
+	PyObject* caPy;
 
 	// Python File name
 	string pyFileName = "PyFile";
@@ -31,6 +32,7 @@ int main() {
 	char charResult;
 	string noArgsResult;
 	double mixedDoubleResult;
+	char* charArrayResult;
 
 	// TESTING
 	iPy = py.CallPyFunc(pyFileName, testInt, "ddd", 121, 22, 4433);
@@ -62,6 +64,11 @@ int main() {
 	mixedDoubleResult = py.PyObjToDouble(mPy);
 	std::cout << "Result: " << mixedDoubleResult << ":" << typeid(mixedDoubleResult).name() << std::endl << std::endl;
 	Py_DECREF(mPy);
+
+	caPy = py.CallPyFunc(pyFileName, testString, "ssc", "Char* ", "Test ", 'x');
+	charArrayResult = py.PyObjToCharArray(caPy);	// char* expected
+	std::cout << "Result: " << charArrayResult << " : " << typeid(charArrayResult).name() << std::endl << std::endl;
+	Py_DECREF(caPy);
 
 	Py_Finalize();		// Interpereter shutdown
 	return 0;
