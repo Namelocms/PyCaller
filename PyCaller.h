@@ -26,6 +26,7 @@ public:
 	char PyObjToChar(PyObject* cPyObj);
 	int PyObjToInt(PyObject* dPyObj);
 	double PyObjToDouble(PyObject* fPyObj);
+	char* PyObjToCharArray(PyObject* caPyObj);
 };
 
 #endif
