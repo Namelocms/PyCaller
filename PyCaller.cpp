@@ -45,8 +45,6 @@ PyObject* PyCaller::CallPyFunc(string pyFileName, string pyFuncName, const char*
 	fileName = sTOc(pyFileName);									// Convert file name string to char*[]
 	funcName = sTOc(pyFuncName);									// Convert func name string to char*[]
 
-	std::cout << fileName << std::endl << funcName << std::endl;
-
 	pModule = PyImport_ImportModule(fileName);							// Import Python Module
 	if (pModule == nullptr) {
 		std::cout << "ERROR Importing Python file!" << std::endl;
@@ -134,8 +132,6 @@ PyObject* PyCaller::CallPyFuncNoArgs(string pyFileName, string pyFuncName) {
 
 	fileName = sTOc(pyFileName);
 	funcName = sTOc(pyFuncName);
-
-	std::cout << fileName << std::endl << funcName << std::endl;
 
 	pModule = PyImport_ImportModule(fileName);						// Import the Python module
 	if (pModule == nullptr) {
