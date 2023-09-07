@@ -246,3 +246,14 @@ double PyCaller::PyObjToDouble(PyObject* fPyObj) {
 	return result;
 }
 
+// Convert PyObject result to C++ char*
+char* PyCaller::PyObjToCharArray(PyObject* caPyObj) {
+	string cppString;
+	char* result;
+	
+	cppString = PyObjToString(caPyObj);
+
+	result = sTOc(cppString);
+
+	return result;
+}
