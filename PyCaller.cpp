@@ -10,7 +10,7 @@ char* PyCaller::sTOc(string aString) {
 
 /*
 
-Calls a Python Function with any number and type of arguments
+Calls a Python Function with any number and type of arguments > 0
 
 The 'const char* fmt...' argument represents the format string followed by variable arguments.
 Format string example: "cdfs" -> 'c'(char), 'd'(int), 'f'(double), 's'(string) -> expected arg input: doSomething("cdfs", 'A', 3, 2.5, "test");
